@@ -1,0 +1,89 @@
+@use 'mixins' as m;
+
+.ft {
+  background: var(--cream-deep);
+  border-top: 1px solid var(--line);
+  padding-block: var(--space-xl) var(--space-md);
+}
+
+.ft__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-lg);
+
+  @include m.md {
+    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.ft__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  max-width: 42ch;
+}
+
+.ft__logo {
+  width: 160px;
+  height: auto;
+  color: var(--olive);
+}
+
+.ft__blurb {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.ft__shipping {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--olive);
+}
+
+.ft__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.ft__heading {
+  @include m.eyebrow;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+.ft__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin: 0;
+}
+
+.ft__link {
+  @include m.focus-ring;
+
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  text-decoration: none;
+
+  @include m.pointer-fine {
+    &:hover {
+      color: var(--olive);
+      text-decoration: underline;
+    }
+  }
+}
+
+.ft__legal {
+  margin-top: var(--space-lg);
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+  text-align: center;
+}

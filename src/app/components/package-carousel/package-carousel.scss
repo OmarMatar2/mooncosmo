@@ -1,0 +1,228 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+}
+
+.carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+// ---- Track -------------------------------------------------------------------
+.carousel__track {
+  @include m.hide-scrollbar;
+
+  display: flex;
+  gap: var(--space-sm);
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3xs) var(--gutter) var(--space-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+
+  @include m.lg {
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+}
+
+.carousel__item {
+  scroll-snap-align: start;
+  // Mobile: the next card peeks so the row reads as swipeable.
+  flex: 0 0 85%;
+
+  @include m.md {
+    flex-basis: calc((100% - var(--space-sm)) / 2);
+  }
+
+  @include m.lg {
+    flex-basis: calc((100% - var(--space-sm) * 2) / 3);
+  }
+
+  @include m.xl {
+    flex-basis: calc((100% - var(--space-sm) * 3) / 4);
+  }
+}
+
+// ---- Card --------------------------------------------------------------------
+.pkg {
+  @include m.card;
+  @include m.focus-ring;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+
+  @include m.pointer-fine {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+    }
+  }
+}
+
+.pkg__media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(--space-2xs);
+  background: var(--blush);
+  aspect-ratio: 5 / 4;
+
+  product-image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.pkg__badge {
+  position: absolute;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--rose);
+  color: var(--white);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  // Decorative overlay: must never swallow a tap meant for the card.
+  pointer-events: none;
+}
+
+.pkg__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  padding: var(--space-md);
+  flex: 1 1 auto;
+}
+
+.pkg__name {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: var(--ls-heading);
+  color: var(--olive);
+}
+
+.pkg__tagline {
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.pkg__count {
+  @include m.eyebrow;
+  margin-top: var(--space-3xs);
+}
+
+.pkg__more {
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-button);
+  text-transform: uppercase;
+  color: var(--olive);
+}
+
+// ---- Arrows (desktop pointer only) --------------------------------------------
+.carousel__arrow {
+  @include m.tap-target;
+  @include m.focus-ring;
+
+  display: none;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--olive);
+  box-shadow: var(--shadow-soft);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  @include m.lg {
+    display: grid;
+  }
+
+  // Hidden on touch devices even at desktop widths.
+  @include m.touch {
+    display: none;
+  }
+
+  @include m.pointer-fine {
+    &:not(:disabled):hover {
+      background: var(--olive);
+      color: var(--white);
+    }
+  }
+}
+
+// ---- Dots (mobile) ------------------------------------------------------------
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2xs);
+  // Own the vertical room the hit areas need instead of letting them spill onto
+  // whatever sits above and below the row.
+  min-height: var(--tap-target);
+  align-items: center;
+  margin: 0;
+
+  @include m.md {
+    display: none;
+  }
+}
+
+// The dots exist below md only. They are aria-hidden and tabindex="-1" — a decorative
+// mirror of the swipe gesture rather than a control in the accessibility tree — so an
+// 8px dot is what the design calls for. The hit area is grown behind each one to the
+// full height of the row and the full width of its own pitch, which is as far as it
+// can go before neighbouring targets start stealing each other's taps. That is taller
+// but still narrower than 48x48; see the note in the handover.
+.dots__dot {
+  position: relative;
+  display: block;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+  transition: background-color var(--dur-fast) var(--ease-soft);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // Own half the gap on each side — the widest this can be without two dots
+    // competing for the same tap.
+    width: calc(100% + var(--space-2xs));
+    height: var(--tap-target);
+  }
+
+  &.is-active {
+    background: var(--olive);
+  }
+}

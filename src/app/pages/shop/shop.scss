@@ -1,0 +1,142 @@
+@use 'mixins' as m;
+
+// ---- Quiz call to action ------------------------------------------------------
+// Sits at the foot of the page, after the grid and the packages: by this point the
+// visitor has seen the range, so this is the "still undecided?" exit, not a header.
+.shop-head {
+  padding-block: var(--space-lg);
+}
+
+.shop-head__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-align: center;
+
+  h1 {
+    // Smaller than the landing hero: this heading labels the page, it does not sell.
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+  }
+}
+
+.shop-head__sub {
+  margin: 0 0 var(--space-2xs);
+  max-width: 48ch;
+  color: var(--ink-soft);
+}
+
+// ---- Packages ----------------------------------------------------------------
+// The carousel's clipped cards can bleed a subpixel past the viewport in WebKit and
+// make the page itself scrollable sideways. `clip` hard-crops without creating a
+// scroll container of its own, leaving the track's internal scrolling untouched.
+.packages {
+  overflow-x: clip;
+}
+
+.packages__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-md);
+  text-align: center;
+  align-items: center;
+}
+
+.packages__sub {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--ink-soft);
+}
+
+// ---- Products ----------------------------------------------------------------
+// Same clipping rationale as .packages: below md the grid becomes a horizontal
+// scroller, and its snapped cards can otherwise push the page sideways in WebKit.
+.products {
+  overflow-x: clip;
+}
+
+.products__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+// Mobile (< md): horizontal scroll-snap track, matching the packages carousel.
+// Tablet and up: the six products fit comfortably in a grid, so nothing is hidden
+// behind a scroll gesture on screens with room to show everything at once.
+.products__grid {
+  display: flex;
+  gap: var(--space-md);
+
+  // Native scrolling only — no drag handlers, no library.
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--gutter);
+  -webkit-overflow-scrolling: touch;
+
+  // Bleed the track out to the viewport edges. The offset must be the *container's
+  // own* gutter, not a fixed step: --gutter is a clamp() that resolves to 16px on a
+  // phone, so cancelling it with --space-md (24px) pushed the track 8px past each
+  // viewport edge and left the snap positions 8px out of step with the headings
+  // above. Using --gutter on both sides makes the track exactly viewport-wide.
+  margin-inline: calc(-1 * var(--gutter));
+  padding-inline: var(--gutter);
+  padding-block-end: var(--space-2xs); // room for focus rings
+
+  // Functional scrolling, hidden scrollbar.
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Each card is a fixed-width, snapping flex item.
+  > product-card {
+    flex: 0 0 var(--card-w);
+    inline-size: var(--card-w);
+    scroll-snap-align: start;
+  }
+
+  @include m.md {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+
+    // Reset every scroller-specific property back to grid behaviour.
+    overflow-x: visible;
+    overscroll-behavior-x: auto;
+    scroll-snap-type: none;
+    scroll-padding-inline-start: 0;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-block-end: 0;
+
+    > product-card {
+      flex: initial;
+      inline-size: 100%;
+      scroll-snap-align: none;
+    }
+  }
+
+  @include m.lg {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+// Keyboard users need a visible target when tabbing into the track itself.
+.products__grid:focus-visible {
+  outline: 2px solid var(--olive);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .products__grid {
+    scroll-behavior: smooth;
+  }
+}

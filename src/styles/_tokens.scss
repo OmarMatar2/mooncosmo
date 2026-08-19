@@ -1,0 +1,119 @@
+// MoonCosmo design tokens — single source of truth for colour, type, space, depth.
+// Breakpoint values are duplicated as SCSS variables because CSS custom properties
+// cannot be used inside media query conditions.
+
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1440px;
+
+:root {
+  // ---- Brand palette -------------------------------------------------------
+  --cream: #faf6f0; // page background
+  --cream-deep: #f2eae0; // alternating section background
+  --olive: #4a5d3a; // primary buttons, headings
+  --olive-deep: #3a4a2d; // hover state
+  --peach: #f5c9a8; // accent, badges
+  --blush: #f8e4e0; // soft card backgrounds
+  --rose: #d4808a; // sale prices, "save" badges
+  --ink: #2c2a26; // body text
+  --ink-soft: #6b665e; // secondary text
+  --line: #e5dcd0; // borders, dividers
+  --white: #ffffff; // cards
+
+  // Accessible companion to --rose. #D4808A on white is only 2.9:1, which fails
+  // WCAG AA for small text, so rose *text* under 18.66px bold uses --rose-text
+  // (#a84e58 → 5.3:1 on white, 4.9:1 on cream). --rose stays for large price
+  // figures and for badge backgrounds.
+  --rose-text: #a84e58;
+  --rose-soft: #f7e7e9; // savings badge background
+
+  // ---- Breakpoints (documentation; media queries use the SCSS vars) --------
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1440px;
+
+  // ---- Z-index ladder ------------------------------------------------------
+  // Decorative layers never exceed --z-base. Anything tappable sits above it.
+  --z-base: 0;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  // ---- Radii ---------------------------------------------------------------
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-pill: 999px;
+
+  // ---- Elevation -----------------------------------------------------------
+  --shadow-soft: 0 2px 12px rgba(44, 42, 38, 0.06);
+  --shadow-lift: 0 6px 24px rgba(44, 42, 38, 0.1);
+  --shadow-modal: 0 12px 48px rgba(44, 42, 38, 0.18);
+
+  // ---- Typography ----------------------------------------------------------
+  --font-heading: 'Fraunces', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --fs-xs: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
+  --fs-sm: clamp(0.82rem, 0.78rem + 0.2vw, 0.9rem);
+  --fs-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --fs-md: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
+  --fs-lg: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+  --fs-xl: clamp(1.45rem, 1.25rem + 1vw, 2rem);
+  --fs-2xl: clamp(1.75rem, 1.4rem + 1.75vw, 2.75rem);
+  --fs-3xl: clamp(2.1rem, 1.6rem + 2.5vw, 3.5rem);
+
+  --card-w: 17.5rem;         // 280px
+  --card-img-ratio: 4 / 5;
+  --card-body-h: 8.5rem;
+
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-body: 1.6;
+
+  --ls-heading: -0.02em;
+  --ls-button: 0.08em;
+  --ls-eyebrow: 0.16em;
+
+  // ---- Spacing -------------------------------------------------------------
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --section-pad: clamp(3rem, 8vw, 6rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  // ---- Layout --------------------------------------------------------------
+  --container-max: 1280px;
+  --tap-target: 48px;
+  // Overwritten at runtime by the wholesale bar's ResizeObserver. The static value
+  // is the bar's real height at its default type size, so anything anchored to it is
+  // still positioned correctly on the first paint and if scripting never runs.
+  --wholesale-bar-height: 3.25rem;
+
+  // ---- Motion --------------------------------------------------------------
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur-base: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}
+
+@media (min-width: 480px) {
+  :root { --card-w: 19rem; }
+}

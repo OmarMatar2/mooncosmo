@@ -1,0 +1,111 @@
+@use 'mixins' as m;
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(44, 42, 38, 0.42);
+  animation: fade var(--dur-base) var(--ease-out);
+
+  @include m.md {
+    align-items: center;
+    padding: var(--space-md);
+  }
+}
+
+// Mobile: full-screen sheet that slides up. Tablet+: centred dialog.
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100dvh;
+  height: 100dvh;
+  background: var(--cream);
+  border-radius: 0;
+  box-shadow: var(--shadow-modal);
+  animation: slide-up var(--dur-slow) var(--ease-out);
+  overflow: hidden;
+
+  @include m.md {
+    width: 90%;
+    height: auto;
+    max-height: min(90dvh, 780px);
+    max-width: 600px;
+    border-radius: var(--radius-card);
+    animation: fade var(--dur-base) var(--ease-out);
+  }
+}
+
+.panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-md) var(--space-xs);
+  border-bottom: 1px solid var(--line);
+  background: var(--cream);
+
+  @include m.short-landscape {
+    padding-block: var(--space-2xs);
+  }
+}
+
+.panel__title {
+  font-size: var(--fs-lg);
+  margin: 0;
+}
+
+.panel__close {
+  @include m.tap-target;
+  @include m.focus-ring;
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  margin: calc(var(--space-2xs) * -1);
+  color: var(--ink-soft);
+  border-radius: var(--radius-pill);
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  @include m.pointer-fine {
+    &:hover {
+      color: var(--olive);
+    }
+  }
+}
+
+.panel__body {
+  padding: var(--space-md);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(6%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

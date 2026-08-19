@@ -1,0 +1,54 @@
+@use 'mixins' as m;
+
+.fab {
+  @include m.focus-ring;
+
+  position: fixed;
+  right: var(--space-sm);
+  bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background: var(--olive);
+  color: var(--white);
+  box-shadow: var(--shadow-lift);
+  transition: transform var(--dur-fast) var(--ease-soft);
+
+  @include m.md {
+    right: var(--space-md);
+    bottom: var(--space-md);
+  }
+
+  @include m.pointer-fine {
+    &:hover {
+      background: var(--olive-deep);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.fab__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--rose);
+  color: var(--white);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  // Decorative counter — the anchor beneath it must stay tappable.
+  pointer-events: none;
+}

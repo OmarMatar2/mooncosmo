@@ -1,0 +1,45 @@
+.price {
+  // The `.visually-hidden` span below is absolutely positioned. Without a positioned
+  // ancestor its containing block is the initial containing block, so it escapes the
+  // clip of any scroll container it sits inside — on /shop below md, that put a 1px
+  // span 1560px to the right of the viewport and made the whole page pan sideways in
+  // WebKit. Positioning .price keeps the span inside the card that owns it.
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  margin: 0;
+}
+
+.price__was {
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.price__now {
+  // --rose is reserved for prices; at this weight and size it clears AA as large text.
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--rose-text);
+}
+
+.price--lg .price__now {
+  font-size: var(--fs-xl);
+  color: var(--rose-text);
+}
+
+.price__badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--rose-soft);
+  color: var(--rose-text);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

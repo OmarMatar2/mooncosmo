@@ -1,0 +1,44 @@
+@use 'tokens';
+@use 'reset';
+@use 'typography';
+@use 'buttons';
+@use 'mixins' as m;
+
+// Shared utilities available to every component template.
+.container {
+  @include m.container;
+}
+
+.section {
+  @include m.section;
+}
+
+.section--alt {
+  background: var(--cream-deep);
+}
+
+.eyebrow {
+  @include m.eyebrow;
+}
+
+.visually-hidden {
+  @include m.visually-hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  z-index: var(--z-toast);
+  padding: var(--space-2xs) var(--space-sm);
+  background: var(--olive);
+  color: var(--white);
+  border-radius: var(--radius-button);
+  transform: translateY(-200%);
+
+  &:focus-visible {
+    transform: translateY(0);
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}

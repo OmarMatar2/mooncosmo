@@ -1,0 +1,38 @@
+@let key = animationKey();
+
+<div class="q" [attr.data-key]="key">
+  <h1 class="q__title" id="quiz-question-title" #title tabindex="-1">{{ titleText() }}</h1>
+
+  <div class="q__options" #group role="radiogroup" aria-labelledby="quiz-question-title">
+    @for (option of options(); track option.value; let i = $index) {
+      <button
+        type="button"
+        class="option"
+        role="radio"
+        [class.is-selected]="option.selected"
+        [attr.aria-checked]="option.selected"
+        [tabindex]="focusIndex() === i ? 0 : -1"
+        (click)="selected.emit(option.value)"
+        (keydown)="onKeydown($event, i)"
+      >
+        <span class="option__mark" aria-hidden="true"></span>
+        <span class="option__label">{{ option.label }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="q__actions">
+    @if (canGoBack()) {
+      <moon-button variant="ghost" (pressed)="back.emit()">Back</moon-button>
+    }
+    <moon-button
+      class="q__next"
+      size="lg"
+      [disabled]="!canAdvance()"
+      [full]="!canGoBack()"
+      (pressed)="next.emit()"
+    >
+      Next
+    </moon-button>
+  </div>
+</div>

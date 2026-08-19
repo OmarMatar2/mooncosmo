@@ -1,0 +1,73 @@
+<div class="carousel">
+  <button
+    type="button"
+    class="carousel__arrow carousel__arrow--prev"
+    aria-label="Previous packages"
+    [disabled]="activeIndex() === 0"
+    (click)="scrollBy(-1)"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  <ul class="carousel__track" #track (scroll)="onScroll()" aria-label="Product packages">
+    @for (pkg of packages(); track pkg.id; let i = $index) {
+      <li class="carousel__item">
+        <button
+          type="button"
+          class="pkg"
+          [attr.aria-label]="'View ' + pkg.name + ' package details'"
+          (click)="opened.emit(pkg)"
+          (keydown)="onKeydown($event, i)"
+        >
+          <span class="pkg__media">
+            <product-image
+              [src]="pkg.image"
+              [alt]="pkg.imageAlt"
+              [label]="pkg.name"
+              [width]="1000"
+              [height]="800"
+            />
+            <span class="pkg__badge">Save {{ pkg.originalPrice - pkg.salePrice | currency: 'USD' }}</span>
+          </span>
+
+          <span class="pkg__body">
+            <span class="pkg__name">{{ pkg.name }}</span>
+            <span class="pkg__tagline">{{ pkg.tagline }}</span>
+            <span class="pkg__count">{{ pkg.products.length }} products included</span>
+            <price-display [originalPrice]="pkg.originalPrice" [salePrice]="pkg.salePrice" [showBadge]="false" />
+            <span class="pkg__more">View details</span>
+          </span>
+        </button>
+      </li>
+    }
+  </ul>
+
+  <button
+    type="button"
+    class="carousel__arrow carousel__arrow--next"
+    aria-label="Next packages"
+    [disabled]="activeIndex() >= packages().length - 1"
+    (click)="scrollBy(1)"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+</div>
+
+<ul class="dots" aria-hidden="true">
+  @for (pkg of packages(); track pkg.id; let i = $index) {
+    <li>
+      <button
+        type="button"
+        class="dots__dot"
+        [class.is-active]="activeIndex() === i"
+        tabindex="-1"
+        [attr.aria-label]="'Go to ' + pkg.name"
+        (click)="goTo(i)"
+      ></button>
+    </li>
+  }
+</ul>

@@ -1,0 +1,22 @@
+<div class="scrim" (click)="onScrimPointer($event)" (keydown)="onKeydown($event)">
+  <div
+    class="panel"
+    #panel
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="labelledBy()"
+  >
+    <header class="panel__head">
+      <h2 class="panel__title" [id]="labelledBy()">{{ titleText() }}</h2>
+      <button class="panel__close" type="button" aria-label="Close dialog" (click)="close()">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="panel__body">
+      <ng-content />
+    </div>
+  </div>
+</div>

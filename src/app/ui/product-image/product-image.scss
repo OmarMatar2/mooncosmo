@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  // `cover` for the supplied photographic assets; a transparent cut-out swapped in
+  // later still reads correctly against the blush ground behind it. No grey box, and
+  // no blend mode — multiply tints a photo that has its own background.
+  object-fit: cover;
+  border-radius: var(--radius-button);
+  background: transparent;
+}
+
+.fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  width: 100%;
+  height: 100%;
+  min-height: 140px;
+  padding: var(--space-sm);
+  border-radius: var(--radius-card);
+  background: var(--blush);
+  color: var(--olive);
+  text-align: center;
+}
+
+.fallback__moon {
+  width: 32px;
+  height: 32px;
+}
+
+.fallback__name {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}

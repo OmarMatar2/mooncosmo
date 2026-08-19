@@ -1,0 +1,41 @@
+@use 'mixins' as m;
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  overflow: hidden;
+}
+
+.stepper__btn {
+  @include m.tap-target;
+  @include m.focus-ring;
+
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-md);
+  color: var(--olive);
+  line-height: 1;
+
+  &:disabled {
+    color: var(--ink-soft);
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include m.pointer-fine {
+    &:not(:disabled):hover {
+      background: var(--cream-deep);
+    }
+  }
+}
+
+.stepper__value {
+  min-width: 2.25rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}

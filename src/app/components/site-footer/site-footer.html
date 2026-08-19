@@ -1,0 +1,47 @@
+<footer class="ft">
+  <div class="ft__inner container">
+    <div class="ft__brand">
+      <svg class="ft__logo" viewBox="0 0 170 40" role="img" aria-label="MoonCosmo">
+        <path d="M18 6a14 14 0 1 0 8.5 25A17 17 0 0 1 18 6Z" fill="currentColor" />
+        <text x="36" y="26" font-family="Fraunces, Georgia, serif" font-size="18" fill="currentColor">
+          MoonCosmo
+        </text>
+      </svg>
+      <p class="ft__blurb">{{ blurb }}</p>
+      <p class="ft__shipping">{{ shippingNote }}</p>
+    </div>
+
+    <div class="ft__col">
+      <h2 class="ft__heading">Contact</h2>
+      <a class="ft__link" [href]="'mailto:' + email">{{ email }}</a>
+    </div>
+
+    <div class="ft__col">
+      <h2 class="ft__heading">Follow</h2>
+      <ul class="ft__list">
+        @for (social of socials; track social.label) {
+          <li>
+            <a class="ft__link" [href]="social.url" target="_blank" rel="noopener">
+              {{ social.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="ft__col">
+      <h2 class="ft__heading">Policies</h2>
+      <ul class="ft__list">
+        @for (policy of policies; track policy.label) {
+          <li>
+            <a class="ft__link" [href]="policy.url" target="_blank" rel="noopener">
+              {{ policy.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <p class="ft__legal">© {{ year }} MoonCosmo. All rights reserved.</p>
+</footer>

@@ -1,0 +1,171 @@
+@use 'mixins' as m;
+
+// ---- Hero --------------------------------------------------------------------
+// Base layer stays mobile: stacking order, gutters, gaps and type are untouched.
+// Everything desktop/tablet lives in the min-width blocks below.
+.hero {
+  @include m.lg {
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+  }
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: center;
+
+  @include m.md {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  @include m.lg {
+    max-width: 1600px;
+    padding-inline: clamp(2rem, 4vw, 4rem);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+    align-items: center;
+  }
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  order: 2;
+
+  @include m.md {
+    h1 {
+      font-size: min(var(--fs-3xl), 2.75rem);
+    }
+  }
+
+  @include m.lg {
+    order: 1;
+    max-width: 620px;
+
+    h1 {
+      font-size: clamp(3rem, 4.5vw, 4.25rem);
+      line-height: 1.05;
+    }
+
+    .moon-btn {
+      padding: 1.125rem 3rem;
+    }
+  }
+}
+
+// The primary button keeps its own size and weight; the secondary link sits under
+// it — never beside it — centred on the button it follows.
+.hero__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__skip {
+  @include m.focus-ring;
+
+  margin-top: clamp(0.875rem, 2vw, 1.125rem);
+  color: var(--ink-soft);
+  font-size: clamp(0.875rem, 1.1vw, 0.9375rem);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  transition: color var(--dur-fast) var(--ease-out);
+
+  @include m.pointer-fine {
+    &:hover {
+      color: var(--olive);
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+  }
+}
+
+.hero__sub {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-md);
+
+  @include m.lg {
+    font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+    line-height: 1.55;
+  }
+}
+
+.hero__media {
+  order: 1;
+  display: grid;
+  place-items: center;
+  // No inset: the image fills the column edge to edge inside the page gutter.
+  padding: 0;
+  aspect-ratio: 5 / 4;
+  max-height: 460px;
+
+  @include m.lg {
+    order: 2;
+    aspect-ratio: 4 / 3;
+  }
+
+  // The wrapper has no background of its own, so it is a pass-through box: the
+  // radius and shadow live on the image itself.
+  product-image {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+
+    @include m.lg {
+      box-shadow: var(--shadow-soft);
+    }
+  }
+}
+
+// ---- How it works ------------------------------------------------------------
+.how__title {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.how__steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-lg);
+  counter-reset: step;
+
+  @include m.md {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.how__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-align: center;
+}
+
+.how__icon {
+  width: 44px;
+  height: 44px;
+  color: var(--olive);
+}
+
+.how__step-title {
+  margin: 0;
+  font-size: var(--fs-lg);
+}
+
+.how__step-copy {
+  margin: 0;
+  max-width: 32ch;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+

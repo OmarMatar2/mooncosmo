@@ -1,0 +1,55 @@
+<main id="main" class="quiz">
+  <div class="quiz__inner container">
+    @let step = vm.step();
+
+    @if (vm.isQuestionStep()) {
+      <quiz-progress
+        class="quiz__progress"
+        [fraction]="vm.progressFraction()"
+        [label]="vm.progressLabel()"
+      />
+    }
+
+    @switch (step) {
+      @case ('analysis') {
+        <analysis-screen (finished)="vm.finishAnalysis()" />
+      }
+      @case ('result') {
+        <result-view
+          [items]="vm.recommendationItems()"
+          [originalTotal]="vm.resultOriginalTotal()"
+          [saleTotal]="vm.resultSaleTotal()"
+          [totalSavings]="vm.resultSavings()"
+          (addRequested)="vm.addResultToCart()"
+          (retakeRequested)="vm.reset()"
+        />
+      }
+      @case ('upsell') {
+        @let upsell = vm.upsellProduct();
+        @if (upsell) {
+          <upsell-view
+            [product]="upsell"
+            [notice]="vm.upsellNotice()"
+            (accepted)="vm.acceptUpsell()"
+            (declined)="vm.declineUpsell()"
+          />
+        }
+      }
+      @default {
+        <!-- One question per screen. quiz-question restarts its own slide
+             animation when animationKey changes. -->
+        <quiz-question
+          [titleText]="vm.questionTitle()"
+          [options]="vm.currentOptions()"
+          [canAdvance]="vm.canAdvance()"
+          [canGoBack]="vm.canGoBack()"
+          [direction]="vm.direction()"
+          [animationKey]="step"
+          (selected)="vm.select($event)"
+          (next)="vm.next()"
+          (back)="vm.back()"
+        />
+      }
+    }
+  </div>
+</main>

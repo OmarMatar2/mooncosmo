@@ -1,0 +1,18 @@
+@use 'mixins' as m;
+
+// Clears the fixed wholesale bar. The 6.25rem that used to sit here dated from when
+// the bar stacked its three parts into a column on small screens; the bar lays out as
+// a single row at every width now, so that reserved a 48px empty band under it on
+// every mobile page. Anchoring to the height the bar actually publishes keeps the two
+// in step whatever the bar ends up measuring, safe-area padding included.
+.shell {
+  padding-top: calc(var(--wholesale-bar-height) + var(--space-2xs));
+
+  @include m.md {
+    padding-top: 3rem;
+  }
+
+  @include m.short-landscape {
+    padding-top: 3rem;
+  }
+}

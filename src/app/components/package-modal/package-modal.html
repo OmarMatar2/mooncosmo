@@ -1,0 +1,55 @@
+<moon-modal
+  [titleText]="contents().package.name"
+  labelledBy="package-modal-title"
+  (closed)="closed.emit()"
+>
+  <div class="pm">
+    <div class="pm__media">
+      <product-image
+        [src]="contents().package.image"
+        [alt]="contents().package.imageAlt"
+        [label]="contents().package.name"
+        [width]="1000"
+        [height]="800"
+      />
+    </div>
+
+    <p class="pm__tagline">{{ contents().package.tagline }}</p>
+    <p class="pm__description">{{ contents().package.description }}</p>
+
+    <h3 class="pm__heading">What's included</h3>
+    <ul class="pm__items">
+      @for (item of contents().items; track item.slug) {
+        <li class="pm__item">
+          <span class="pm__thumb">
+            <product-image
+              [src]="item.image"
+              [alt]="item.imageAlt"
+              [label]="item.name"
+              [width]="160"
+              [height]="160"
+            />
+          </span>
+          <span class="pm__item-text">
+            <span class="pm__item-name">{{ item.name }}</span>
+            <span class="pm__item-size">{{ item.size }}</span>
+          </span>
+        </li>
+      }
+    </ul>
+
+    <div class="pm__pricing">
+      <price-display
+        [originalPrice]="contents().package.originalPrice"
+        [salePrice]="contents().package.salePrice"
+        size="lg"
+        [showBadge]="false"
+      />
+      <p class="pm__savings">You save {{ contents().savings | currency: 'USD' }}</p>
+    </div>
+
+    <moon-button size="lg" [full]="true" (pressed)="addRequested.emit()">
+      Add Package to Cart
+    </moon-button>
+  </div>
+</moon-modal>

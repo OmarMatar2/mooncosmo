@@ -1,0 +1,55 @@
+<main id="main">
+  <!-- Page header -->
+  
+
+  <!-- All products -->
+  <section class="section products" aria-labelledby="products-title" id="products">
+    <div class="container">
+      <div class="products__head">
+        <p class="eyebrow">The full range</p>
+        <h2 id="products-title">All Products</h2>
+      </div>
+
+      <div class="products__grid">
+        @for (product of vm.products; track product.slug) {
+          <product-card [product]="product" (added)="vm.addProduct($event.slug)" />
+        }
+      </div>
+    </div>
+  </section>
+  
+  <!-- Packages -->
+  <section class="section section--alt packages" aria-labelledby="packages-title">
+    <div class="container packages__head">
+      <p class="eyebrow">Curated sets</p>
+      <h2 id="packages-title">Packages Worth Sharing</h2>
+      <p class="packages__sub">
+        Bundled routines at a better price. Swipe to see them all.
+      </p>
+    </div>
+
+    <package-carousel [packages]="vm.packages" (opened)="vm.showPackage($event.id)" />
+  </section>
+
+  <section class="section shop-head" aria-labelledby="shop-title">
+    <div class="container shop-head__inner">
+      <h1 id="shop-title">Not Sure What To Choose?</h1>
+      <p class="shop-head__sub">
+        Tell us what your skin needs, and we'll help you find your perfect match.
+      </p>
+      <a class="moon-btn moon-btn--primary moon-btn--lg" routerLink="/quiz">Find Your Match</a>
+    </div>
+  </section>
+
+
+  <site-footer />
+</main>
+
+@let openPackage = vm.openPackage();
+@if (openPackage) {
+  <package-modal
+    [contents]="openPackage"
+    (closed)="vm.closePackage()"
+    (addRequested)="vm.addPackageToCart(openPackage.package)"
+  />
+}

@@ -1,0 +1,225 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.rv {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: fade-up var(--dur-slow) var(--ease-out);
+}
+
+.rv__head {
+  text-align: center;
+}
+
+.rv__title {
+  font-size: var(--fs-2xl);
+}
+
+.rv__sub {
+  margin-top: var(--space-2xs);
+  color: var(--ink-soft);
+}
+
+.rv__eyebrow {
+  margin-top: var(--space-xs);
+}
+
+// Mobile: stacked with a + between. Tablet+: side by side.
+.rv__products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.rv__products--pair {
+  @include m.md {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+  }
+}
+
+.rv__product {
+  @include m.card;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  width: 100%;
+  max-width: 460px;
+  padding: var(--space-md);
+  text-align: center;
+
+  .rv__products--pair & {
+    @include m.md {
+      flex: 1 1 0;
+      max-width: 420px;
+    }
+  }
+}
+
+.rv__media {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: var(--space-sm);
+  border-radius: var(--radius-card);
+  background: var(--blush);
+  aspect-ratio: 1 / 1;
+  max-height: 320px;
+  // aspect-ratio sizes the box from its width; max-height then clamps it, so the
+  // media must clip or the image spills over the product name below it.
+  overflow: hidden;
+
+  product-image {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  @include m.short-landscape {
+    aspect-ratio: 16 / 7;
+  }
+}
+
+.rv__name {
+  margin: 0;
+  font-size: var(--fs-lg);
+}
+
+.rv__size {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+}
+
+.rv__why {
+  width: 100%;
+  margin: 0;
+}
+
+.rv__why-title {
+  margin: 0 0 var(--space-3xs);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.rv__why-text {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.rv__benefits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin: var(--space-2xs) 0;
+  width: 100%;
+}
+
+.rv__benefit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  text-align: left;
+}
+
+.rv__benefit-icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--olive);
+}
+
+.rv__plus {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--peach);
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.rv__total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: var(--space-sm);
+  border-radius: var(--radius-card);
+  background: var(--cream-deep);
+}
+
+.rv__total-label {
+  @include m.eyebrow;
+  width: 100%;
+  text-align: center;
+}
+
+.rv__total-was {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.rv__total-now {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--rose-text);
+}
+
+.rv__total-badge {
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--rose-soft);
+  color: var(--rose-text);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.rv__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  max-width: 460px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.rv__disclaimer {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

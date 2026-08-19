@@ -1,0 +1,112 @@
+@use 'mixins' as m;
+
+.pm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.pm__media {
+  display: grid;
+  place-items: center;
+  padding: var(--space-sm);
+  border-radius: var(--radius-card);
+  background: var(--blush);
+  aspect-ratio: 5 / 4;
+
+  product-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  @include m.short-landscape {
+    aspect-ratio: 16 / 6;
+  }
+}
+
+.pm__tagline {
+  @include m.eyebrow;
+  margin: 0;
+}
+
+.pm__description {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.pm__heading {
+  margin: var(--space-2xs) 0 0;
+  font-size: var(--fs-md);
+}
+
+.pm__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin: 0;
+}
+
+.pm__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xs);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-button);
+  background: var(--white);
+}
+
+.pm__thumb {
+  display: grid;
+  place-items: center;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-button);
+  background: var(--blush);
+  overflow: hidden;
+}
+
+.pm__item-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.pm__item-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.pm__item-size {
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+}
+
+.pm__pricing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2xs);
+  padding-top: var(--space-2xs);
+  border-top: 1px solid var(--line);
+}
+
+// The package list can be long, so the primary action stays pinned to the bottom
+// of the scrolling body instead of disappearing below the fold.
+.pm moon-button {
+  position: sticky;
+  bottom: calc(var(--space-md) * -1);
+  z-index: var(--z-sticky);
+  padding-block: var(--space-2xs) var(--space-md);
+  margin-bottom: calc(var(--space-md) * -1);
+  background: var(--cream);
+}
+
+.pm__savings {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--rose-text);
+}

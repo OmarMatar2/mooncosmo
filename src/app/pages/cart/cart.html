@@ -1,0 +1,83 @@
+<main id="main" class="cart">
+  <div class="container">
+    <h1 class="cart__title">Your Cart</h1>
+
+    @if (vm.isEmpty()) {
+      <div class="cart__empty">
+        <svg class="cart__empty-moon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          <path d="M32 4a20 20 0 1 0 12 36A24 24 0 0 1 32 4Z" fill="currentColor" />
+        </svg>
+        <h2 class="cart__empty-title">Nothing here yet</h2>
+        <p class="cart__empty-copy">
+          Take the quiz for a match picked for your skin, or browse the full range.
+        </p>
+        <div class="cart__empty-actions">
+          <a class="moon-btn moon-btn--primary moon-btn--lg" routerLink="/quiz">Take the Quiz</a>
+          <a class="moon-btn moon-btn--outline moon-btn--lg" routerLink="/shop">
+            Browse Products
+          </a>
+        </div>
+      </div>
+    } @else {
+      <div class="cart__layout">
+        <section class="cart__lines" aria-label="Items in your cart" aria-live="polite">
+          @for (line of vm.lines(); track line.slug) {
+            <cart-line-item
+              [line]="line"
+              (quantityChanged)="vm.setQuantity(line.slug, $event)"
+              (removed)="vm.remove($event)"
+            />
+          }
+        </section>
+
+        <aside class="cart__summary" aria-label="Order summary">
+          <div class="cart__summary-inner">
+            <h2 class="cart__summary-title">Summary</h2>
+
+            @let totals = vm.totals();
+
+            <dl class="cart__rows">
+              <div class="cart__row">
+                <dt>Subtotal</dt>
+                <dd class="cart__was">{{ totals.originalSubtotal | currency: 'USD' }}</dd>
+              </div>
+              <div class="cart__row">
+                <dt>Your price</dt>
+                <dd class="cart__now">{{ totals.saleSubtotal | currency: 'USD' }}</dd>
+              </div>
+              <div class="cart__row">
+                <dt>You save</dt>
+                <dd class="cart__save">{{ totals.totalSavings | currency: 'USD' }}</dd>
+              </div>
+              <div class="cart__row">
+                <dt>Shipping</dt>
+                <dd class="cart__free">Free</dd>
+              </div>
+            </dl>
+
+            <p class="cart__tax">
+              Taxes and any additional charges are calculated at checkout.
+            </p>
+
+            @if (vm.checkoutError(); as error) {
+              <p class="cart__error" role="alert">{{ error }}</p>
+            }
+
+            <moon-button
+              size="lg"
+              [full]="true"
+              [disabled]="!vm.canCheckout()"
+              (pressed)="vm.checkout()"
+            >
+              Checkout
+            </moon-button>
+
+            <p class="cart__note">You'll be redirected to our secure Shopify checkout.</p>
+          </div>
+        </aside>
+      </div>
+    }
+  </div>
+
+  <site-footer />
+</main>

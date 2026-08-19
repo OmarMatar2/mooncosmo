@@ -1,0 +1,36 @@
+@use 'mixins' as m;
+
+.quiz {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  // Fill the viewport below the fixed wholesale bar. dvh, never vh.
+  min-height: 70vh;
+  min-height: 70dvh;
+  padding-block: var(--space-lg) var(--space-2xl);
+
+  @include m.md {
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+
+  @include m.short-landscape {
+    padding-block: var(--space-sm);
+  }
+}
+
+.quiz__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+
+  @include m.short-landscape {
+    gap: var(--space-sm);
+  }
+}
+
+.quiz__progress {
+  max-width: 560px;
+  width: 100%;
+  margin-inline: auto;
+}

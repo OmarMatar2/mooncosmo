@@ -1,0 +1,96 @@
+@use 'mixins' as m;
+
+// Top-anchored at every width. Anchored to the bottom, a toast landed on whatever
+// the visitor had just tapped: on the cart the summary card is sticky to the bottom
+// edge, so "Removed from cart" covered the Checkout button and the quantity steppers
+// that produced it. The top strip is the only band of the viewport with no fixed or
+// sticky controls in it once the wholesale bar's own height is accounted for.
+.toasts {
+  position: fixed;
+  // The bar absorbs env(safe-area-inset-top) into its own padding, so its published
+  // height already includes it. max() keeps the toast clear of the notch anyway if
+  // the bar is ever absent or has not been measured yet.
+  top: calc(
+    max(var(--wholesale-bar-height), env(safe-area-inset-top)) + var(--space-sm)
+  );
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100% - 2 * var(--space-sm), 420px);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  align-items: stretch;
+  // Nothing in the toast layer may intercept a tap meant for the page beneath it.
+  // Re-enabled per control, not per toast, so the toast body stays transparent to
+  // pointer events even while it is on screen.
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-card);
+  background: var(--olive);
+  color: var(--white);
+  box-shadow: var(--shadow-lift);
+  font-size: var(--fs-sm);
+  animation: toast-in var(--dur-base) var(--ease-out);
+}
+
+.toast__message {
+  flex: 1 1 auto;
+}
+
+.toast__action {
+  @include m.focus-ring(var(--white));
+  // One of the two controls that takes pointer events back.
+  pointer-events: auto;
+  flex: 0 0 auto;
+  color: var(--peach);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.toast__close {
+  @include m.focus-ring(var(--white));
+  // The dismiss control, and the only other part of the layer that is tappable.
+  pointer-events: auto;
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 32px;
+  color: var(--white);
+  font-size: var(--fs-md);
+  line-height: 1;
+  opacity: 0.8;
+
+  // Full 48x48 tap area without a 48px visual box, which would deepen the toast.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--tap-target);
+    height: var(--tap-target);
+  }
+}
+
+// Enters downward now that it hangs from the top. Duration is unchanged, and the
+// auto-dismiss timing lives in ToastService and is untouched.
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

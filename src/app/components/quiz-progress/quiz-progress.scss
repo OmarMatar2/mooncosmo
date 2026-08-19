@@ -1,0 +1,54 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+}
+
+.qp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.qp__rail {
+  position: relative;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+}
+
+.qp__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--olive);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.qp__moon {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  transform: translateY(-50%);
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  color: var(--olive);
+  transition: left var(--dur-slow) var(--ease-out);
+  // Purely decorative — never intercepts a tap.
+  pointer-events: none;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.qp__label {
+  @include m.eyebrow;
+  margin: 0;
+  text-align: center;
+}

@@ -1,0 +1,102 @@
+@use 'mixins' as m;
+
+// Shared button surface. Used by the MoonButton component for <button> and applied
+// directly to <a> elements that need to look identical.
+.moon-btn {
+  @include m.tap-target;
+  @include m.focus-ring;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: 0.85rem 1.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: var(--ls-button);
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease-soft),
+    border-color var(--dur-fast) var(--ease-soft),
+    color var(--dur-fast) var(--ease-soft),
+    transform var(--dur-fast) var(--ease-soft);
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  @include m.pointer-fine {
+    &:not(:disabled):not([aria-disabled='true']):hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.moon-btn--primary {
+  background: var(--olive);
+  color: var(--white);
+
+  @include m.pointer-fine {
+    &:not(:disabled):hover {
+      background: var(--olive-deep);
+    }
+  }
+}
+
+.moon-btn--outline {
+  background: transparent;
+  border-color: var(--olive);
+  color: var(--olive);
+
+  @include m.pointer-fine {
+    &:not(:disabled):hover {
+      background: rgba(74, 93, 58, 0.08);
+    }
+  }
+}
+
+.moon-btn--ghost {
+  background: var(--white);
+  border-color: var(--line);
+  color: var(--ink);
+
+  @include m.pointer-fine {
+    &:not(:disabled):hover {
+      border-color: var(--olive);
+      color: var(--olive);
+    }
+  }
+}
+
+.moon-btn--quiet {
+  background: none;
+  padding-inline: var(--space-2xs);
+  color: var(--ink-soft);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  text-decoration: underline;
+
+  @include m.pointer-fine {
+    &:hover {
+      color: var(--olive);
+    }
+  }
+}
+
+.moon-btn--lg {
+  padding: 1.05rem 2.2rem;
+  font-size: var(--fs-base);
+}
+
+.moon-btn--full {
+  width: 100%;
+}

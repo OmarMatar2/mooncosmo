@@ -1,0 +1,74 @@
+<div class="rv">
+  <header class="rv__head">
+    <h1 class="rv__title">Your MoonCosmo Match</h1>
+    <p class="rv__sub">Based on your answers, this is what your skin needs.</p>
+    @if (isRoutine()) {
+      <p class="rv__eyebrow eyebrow">Your Personal Routine</p>
+    }
+  </header>
+
+  <div class="rv__products" [class.rv__products--pair]="isRoutine()">
+    @for (item of items(); track item.product.slug; let last = $last) {
+      @let product = item.product;
+      <article class="rv__product">
+        <div class="rv__media">
+          <product-image
+            [src]="product.image"
+            [alt]="product.imageAlt"
+            [label]="product.name"
+            [eager]="true"
+          />
+        </div>
+
+        <h2 class="rv__name">{{ product.name }}</h2>
+        <p class="rv__size">{{ product.size }}</p>
+        <section class="rv__why">
+          <h3 class="rv__why-title">Why we chose this for you</h3>
+          <p class="rv__why-text">{{ item.why }}</p>
+        </section>
+
+        <ul class="rv__benefits">
+          @for (benefit of product.benefits.slice(0, 3); track benefit) {
+            <li class="rv__benefit">
+              <svg class="rv__benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.3" />
+                <path d="m8 12.5 2.6 2.6L16 9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {{ benefit }}
+            </li>
+          }
+        </ul>
+
+        <price-display
+          [originalPrice]="product.originalPrice"
+          [salePrice]="product.salePrice"
+          size="lg"
+        />
+      </article>
+
+      @if (!last) {
+        <div class="rv__plus" aria-hidden="true">+</div>
+      }
+    }
+  </div>
+
+  @if (isRoutine()) {
+    <div class="rv__total">
+      <span class="rv__total-label">Routine total</span>
+      <span class="rv__total-was">{{ originalTotal() | currency: 'USD' }}</span>
+      <span class="rv__total-now">{{ saleTotal() | currency: 'USD' }}</span>
+      <span class="rv__total-badge">Save {{ totalSavings() | currency: 'USD' }}</span>
+    </div>
+  }
+
+  <div class="rv__actions">
+    <moon-button size="lg" [full]="true" (pressed)="addRequested.emit()">
+      {{ ctaLabel() }}
+    </moon-button>
+    <button type="button" class="moon-btn moon-btn--quiet" (click)="retakeRequested.emit()">
+      Retake the quiz
+    </button>
+  </div>
+
+  <p class="rv__disclaimer">{{ disclaimer }}</p>
+</div>

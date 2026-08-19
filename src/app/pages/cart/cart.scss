@@ -1,0 +1,159 @@
+@use 'mixins' as m;
+
+.cart {
+  padding-top: var(--space-lg);
+}
+
+.cart__title {
+  margin-bottom: var(--space-md);
+  font-size: var(--fs-2xl);
+}
+
+// ---- Layout ------------------------------------------------------------------
+.cart__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+
+  @include m.md {
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    gap: var(--space-xl);
+    align-items: start;
+  }
+}
+
+.cart__lines {
+  min-width: 0;
+}
+
+// Mobile: the summary sticks to the bottom so Checkout is always reachable.
+// Tablet and up: it sticks to the top of the second column.
+.cart__summary {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--cream);
+
+  @include m.md {
+    bottom: auto;
+    top: var(--space-lg);
+    background: transparent;
+  }
+}
+
+.cart__summary-inner {
+  @include m.card;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+}
+
+.cart__summary-title {
+  margin: 0 0 var(--space-2xs);
+  font-size: var(--fs-lg);
+}
+
+.cart__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin: 0;
+}
+
+.cart__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  font-size: var(--fs-sm);
+
+  dt {
+    color: var(--ink-soft);
+  }
+
+  dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.cart__was {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.cart__now {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--rose-text);
+}
+
+.cart__save {
+  font-weight: 600;
+  color: var(--rose-text);
+}
+
+.cart__free {
+  font-weight: 600;
+  color: var(--olive);
+}
+
+.cart__tax,
+.cart__note {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+}
+
+.cart__note {
+  text-align: center;
+}
+
+.cart__error {
+  margin: 0;
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-button);
+  background: var(--rose-soft);
+  color: var(--rose-text);
+  font-size: var(--fs-sm);
+}
+
+// ---- Empty state --------------------------------------------------------------
+.cart__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding-block: var(--space-2xl);
+  text-align: center;
+}
+
+.cart__empty-moon {
+  width: 48px;
+  height: 48px;
+  color: var(--peach);
+}
+
+.cart__empty-title {
+  margin: 0;
+  font-size: var(--fs-xl);
+}
+
+.cart__empty-copy {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--ink-soft);
+}
+
+.cart__empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+}

@@ -1,0 +1,121 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.card {
+  @include m.card;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+
+  @include m.pointer-fine {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+    }
+  }
+}
+
+.card__media {
+  display: grid;
+  place-items: center;
+  padding: var(--space-2xs);
+  background: var(--blush);
+  aspect-ratio: 4 / 3;
+
+  product-image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+  flex: 1 1 auto;
+}
+
+.card__name {
+  font-size: var(--fs-lg);
+  margin: 0;
+}
+
+.card__benefit {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.card__size {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.card__cta {
+  margin-top: auto;
+  padding-top: var(--space-xs);
+}
+
+// ---- Mobile card sizing --------------------------------------------------------
+// Scoped below md on purpose. Every rule here corrects a value whose *base* is what
+// desktop renders today, so expressing the fix in the base layer would drag the
+// desktop grid with it. Nothing in this block applies at md and above.
+//
+// The problem it solves: .card__media declares an aspect-ratio, but the image inside
+// it is a grid item that is centred rather than stretched, so its own intrinsic
+// height wins and the ratio is silently dropped. Every product photo then sized its
+// own card, and in the horizontal track the cards came out 509–558px tall with their
+// media boxes ranging from 230px to 278px — visibly ragged, with the Add to Cart
+// buttons landing at different heights across the row.
+@include m.below-md {
+  .card__media {
+    // The token existed and resolved but nothing consumed it.
+    aspect-ratio: var(--card-img-ratio);
+    // Stretch, not centre: a centred grid item is sized by its content, which is
+    // exactly how the intrinsic image height was overriding the ratio.
+    place-items: stretch;
+    overflow: hidden;
+
+    product-image {
+      // Without min-block-size the image's intrinsic height still sets the floor.
+      min-block-size: 0;
+      block-size: 100%;
+    }
+  }
+
+  .card__body {
+    // A floor, not the whole story: the two blocks below are what actually hold the
+    // bodies to a common height.
+    min-block-size: var(--card-body-h);
+  }
+
+  // Clamping alone only caps the tall end. A one-line name still produced a body
+  // 22px shorter than a two-line one, which is what left the Add to Cart buttons
+  // sitting at different heights along the row. Reserving both lines whether or not
+  // the second is used makes every body the same height by construction.
+  .card__name {
+    @include m.line-clamp(2);
+    min-block-size: calc(2 * var(--lh-tight) * 1em);
+    // Break only when a single word cannot fit on a line at all, so a long name
+    // ends on an ellipsis at a word boundary rather than clipped mid-character.
+    overflow-wrap: break-word;
+  }
+
+  .card__benefit {
+    @include m.line-clamp(2);
+    min-block-size: calc(2 * var(--lh-body) * 1em);
+    overflow-wrap: break-word;
+  }
+}

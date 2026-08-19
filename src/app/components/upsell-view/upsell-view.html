@@ -1,0 +1,50 @@
+<div class="uv">
+  <header class="uv__head">
+    <h1 class="uv__title">One More Thing…</h1>
+    <p class="uv__sub">Complete your routine for the best result</p>
+  </header>
+
+  <article class="uv__card">
+    <div class="uv__media">
+      <product-image
+        [src]="product().image"
+        [alt]="product().imageAlt"
+        [label]="product().name"
+        [eager]="true"
+      />
+    </div>
+
+    <div class="uv__body">
+      <h2 class="uv__name">{{ product().name }}</h2>
+      <p class="uv__size">{{ product().size }}</p>
+
+      <ul class="uv__benefits">
+        @for (benefit of product().benefits.slice(0, 4); track benefit) {
+          <li class="uv__benefit">
+            <svg class="uv__benefit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="m5 12.5 4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {{ benefit }}
+          </li>
+        }
+      </ul>
+
+      <price-display
+        [originalPrice]="product().originalPrice"
+        [salePrice]="product().salePrice"
+        size="lg"
+      />
+    </div>
+  </article>
+
+  @if (notice(); as noticeText) {
+    <p class="uv__notice">{{ noticeText }}</p>
+  }
+
+  <div class="uv__actions">
+    <moon-button size="lg" [full]="true" (pressed)="accepted.emit()">Yes, Add It</moon-button>
+    <moon-button variant="outline" size="lg" [full]="true" (pressed)="declined.emit()">
+      No, Thanks
+    </moon-button>
+  </div>
+</div>
