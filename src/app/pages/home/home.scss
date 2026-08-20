@@ -126,46 +126,27 @@
   }
 }
 
-// ---- How it works ------------------------------------------------------------
-.how__title {
-  text-align: center;
-  margin-bottom: var(--space-lg);
-}
-
-.how__steps {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-lg);
-  counter-reset: step;
-
-  @include m.md {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.how__step {
+// ---- Customer reviews --------------------------------------------------------
+// The carousel owns its own track, gutters and dots; this block only styles the
+// heading and gives the carousel its full-bleed room below md.
+.reviews__head {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2xs);
+  gap: var(--space-3xs);
   text-align: center;
+  margin-bottom: var(--space-sm);
 }
 
-.how__icon {
-  width: 44px;
-  height: 44px;
-  color: var(--olive);
-}
-
-.how__step-title {
+.reviews__title {
   margin: 0;
-  font-size: var(--fs-lg);
 }
 
-.how__step-copy {
-  margin: 0;
-  max-width: 32ch;
-  font-size: var(--fs-sm);
-  color: var(--ink-soft);
+.reviews__body {
+  // Below md the carousel bleeds to the viewport edge so a card can peek; the
+  // container padding would otherwise clip the snap points.
+  @include m.below-md {
+    max-width: none;
+    padding-inline: 0;
+  }
 }
-

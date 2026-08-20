@@ -1,0 +1,141 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+}
+
+// ---- Track -------------------------------------------------------------------
+// Scroll-snap carousel below md, matching the packages row; a plain grid above it,
+// where there is room to show every review at once.
+.reviews__track {
+  @include m.hide-scrollbar;
+
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: var(--space-3xs) var(--gutter) var(--space-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+
+  @include m.md {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
+    padding-inline: 0;
+  }
+
+  @include m.lg {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.reviews__item {
+  scroll-snap-align: start;
+  // Mobile: the next card peeks so the row reads as swipeable.
+  flex: 0 0 85%;
+
+  @include m.md {
+    flex: initial;
+  }
+}
+
+// ---- Card --------------------------------------------------------------------
+.review {
+  @include m.card;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  height: 100%;
+  padding: var(--space-sm);
+}
+
+.review__stars {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  color: var(--peach);
+}
+
+.review__star {
+  width: 1rem;
+  height: 1rem;
+
+  &.is-filled {
+    fill: currentColor;
+  }
+}
+
+.review__body {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  // The card grows to the tallest in its row; the meta block stays pinned below.
+  flex: 1 1 auto;
+}
+
+.review__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-2xs);
+  border-top: 1px solid var(--line);
+}
+
+.review__author {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.review__product,
+.review__date {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--fs-xs);
+}
+
+// ---- Dots (mobile) ------------------------------------------------------------
+// Decorative mirror of the swipe gesture — aria-hidden and tabindex="-1", exactly as
+// on the packages carousel.
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-height: var(--tap-target);
+  align-items: center;
+  margin: 0;
+
+  @include m.md {
+    display: none;
+  }
+}
+
+.dots__dot {
+  position: relative;
+  display: block;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+  transition: background-color var(--dur-fast) var(--ease-soft);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + var(--space-2xs));
+    height: var(--tap-target);
+  }
+
+  &.is-active {
+    background: var(--olive);
+  }
+}

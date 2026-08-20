@@ -11,12 +11,24 @@
         role="radio"
         [class.is-selected]="option.selected"
         [attr.aria-checked]="option.selected"
+        [attr.aria-label]="option.label"
+        [attr.aria-describedby]="option.description ? 'quiz-option-desc-' + i : null"
         [tabindex]="focusIndex() === i ? 0 : -1"
         (click)="selected.emit(option.value)"
         (keydown)="onKeydown($event, i)"
       >
         <span class="option__mark" aria-hidden="true"></span>
-        <span class="option__label">{{ option.label }}</span>
+        @if (option.swatch; as swatch) {
+          <!-- Indicative only: the label is what conveys the choice, so the swatch
+               stays decorative and never carries meaning on its own. -->
+          <span class="option__swatch" aria-hidden="true" [style.background]="swatch"></span>
+        }
+        <span class="option__text">
+          <span class="option__label">{{ option.label }}</span>
+          @if (option.description; as description) {
+            <span class="option__description" [id]="'quiz-option-desc-' + i">{{ description }}</span>
+          }
+        </span>
       </button>
     }
   </div>

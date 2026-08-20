@@ -112,8 +112,33 @@
   }
 }
 
-.option__label {
+// The skin-tone swatch. Decorative — the option label carries the meaning, so this
+// never has to reach a contrast threshold on its own.
+.option__swatch {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+
+.option__text {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.option__label {
+  display: block;
+}
+
+.option__description {
+  display: block;
+  color: var(--ink-soft);
+  font-size: var(--fs-xs);
+  line-height: 1.35;
 }
 
 // Pinned to the bottom of the viewport so the primary action is reachable on short

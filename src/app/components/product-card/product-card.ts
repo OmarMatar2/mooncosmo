@@ -21,13 +21,15 @@ import { ProductImage } from '../../ui/product-image/product-image';
 
       <div class="card__body">
         <h3 class="card__name">{{ product().name }}</h3>
-        <p class="card__benefit">{{ product().tagline }}</p>
+        <p class="card__benefit">{{ product().description }}</p>
         <p class="card__size">{{ product().size }}</p>
 
         <price-display
           [originalPrice]="product().originalPrice"
           [salePrice]="product().salePrice"
         />
+
+        <p class="card__warning">{{ product().warning }}</p>
 
         <moon-button
           class="card__cta"

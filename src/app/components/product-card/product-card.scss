@@ -119,3 +119,11 @@
     overflow-wrap: break-word;
   }
 }
+
+// The master sheet's warning, kept under every product. Small print by design.
+.card__warning {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+}

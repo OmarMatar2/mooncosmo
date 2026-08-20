@@ -8,6 +8,15 @@
         [fraction]="vm.progressFraction()"
         [label]="vm.progressLabel()"
       />
+      <!-- Reassurance, not pressure: sits under the progress line and never grows,
+           reddens or blocks. See QuizTimerService. -->
+      <quiz-timer
+        class="quiz__timer"
+        [label]="vm.timerLabel()"
+        [message]="vm.timerMessage()"
+        [canExtend]="vm.timerCanExtend()"
+        (extended)="vm.extendTimer()"
+      />
     }
 
     @switch (step) {
@@ -25,15 +34,14 @@
         />
       }
       @case ('upsell') {
-        @let upsell = vm.upsellProduct();
-        @if (upsell) {
-          <upsell-view
-            [product]="upsell"
-            [notice]="vm.upsellNotice()"
-            (accepted)="vm.acceptUpsell()"
-            (declined)="vm.declineUpsell()"
-          />
-        }
+        <!-- The clay mask is excluded from the quiz entirely, so it can never already
+             be a recommendation: the routine completer is unconditional. -->
+        <upsell-view
+          [product]="vm.upsellProduct()"
+          [notice]="vm.upsellNotice()"
+          (accepted)="vm.acceptUpsell()"
+          (declined)="vm.declineUpsell()"
+        />
       }
       @default {
         <!-- One question per screen. quiz-question restarts its own slide

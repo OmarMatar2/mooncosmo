@@ -193,13 +193,23 @@ test.describe('keyboard-only operation', () => {
     await expect(page.getByRole('radio').nth(1)).toHaveAttribute('aria-checked', 'true');
 
     await pressNext();
-    await expect(page.getByText('Question 2 of 3')).toBeVisible();
+    await expect(page.getByText('Question 2 of 5')).toBeVisible();
 
+    // Q2 — skin tone.
+    await page.getByRole('radio', { name: 'Medium', exact: true }).press('Enter');
+    await pressNext();
+
+    // Q3 — skin type.
+    await page.getByRole('radio', { name: 'Normal', exact: true }).press('Enter');
+    await pressNext();
+
+    // Q4 — main concern.
     await page
       .getByRole('radio', { name: 'Rough or uneven texture', exact: true })
       .press('Enter');
     await pressNext();
 
+    // Q5 — desired result.
     await page.getByRole('radio', { name: 'Smooth & polished', exact: true }).press('Enter');
     await pressNext();
 

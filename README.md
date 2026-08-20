@@ -46,27 +46,50 @@ npm run e2e                    # end-to-end tests (Playwright, Chromium + WebKit
 | **Define packages** | `src/app/data/packages.data.ts`. `products` lists the slugs added to the cart as separate line items; the bundle's `originalPrice`/`salePrice` are its own numbers, not derived from the products. |
 | **Set phone / WhatsApp / email** | `src/app/data/contact.data.ts` — also social links, Shopify policy page URLs, and the footer blurb. |
 | **Point at a different Shopify store** | `src/app/data/shopify.config.ts` — `STORE_DOMAIN`. |
-| **Change quiz wording** | `src/app/data/quiz.data.ts` — question titles, answer labels, analysis messages, animation duration. |
+| **Change quiz wording** | `src/app/data/quiz.data.ts` — question titles, answer labels, tone swatches, the "why we chose this" fragments, analysis messages, animation duration. |
+| **Replace the placeholder reviews** | `src/app/data/reviews.data.ts` — every entry is a marked placeholder. Empty the array and the home-page section hides itself. |
+| **Edit product copy** | `src/app/data/products.data.ts` — `description` is the flyer line; everything else is the PRODUCT MASTER SHEET verbatim. `benefits` are approved claims: never add to or reword them. |
 | **Modify the recommendation tables** | `src/app/services/recommendation.engine.ts` — see below. |
 | **Swap assets** | `src/assets/README.md` documents every file and its dimensions. |
 | **Adjust the visual system** | `src/styles/_tokens.scss` — colours, type scale, spacing, radii, z-index ladder, breakpoints. |
 
 ### Modifying the recommendation logic
 
-Two tables in `src/app/services/recommendation.engine.ts` drive everything:
+The quiz is **five questions, all always shown** — there are no conditional branches
+and no skipped steps:
 
-- **`RESULT_MATRIX[need][skinType]`** — which product (or pair) a skin type + need
-  combination yields.
-- **`FINISH_MATRIX[slug][finish]`** — which products survive each question-4 answer.
+| # | Question | Role |
+|---|---|---|
+| 1 | Age | Cosmetic only — collected, never scored |
+| 2 | Skin tone | Hard filter |
+| 3 | Skin type | Hard filter + suitability bonus |
+| 4 | Main concern | Points |
+| 5 | Desired result | Points |
 
-Everything else is derived from those two, so you do not need to touch anything else:
+Five tables in `src/app/services/recommendation.engine.ts` drive everything:
 
-- Question 4 is **skipped automatically** when the candidates cannot be separated —
-  either one candidate, or two with identical rows in `FINISH_MATRIX` (Turmeric +
-  Golden Radiance today). The "Question 2 of 3" counter adapts on its own.
-- The question-4 options shown are **computed** from the candidates, so an answer that
-  would eliminate every product is never offered and a zero-product result is
-  structurally impossible.
+- **`TONE_ELIGIBILITY[tone][slug]`** and **`TYPE_ELIGIBILITY[skinType][slug]`** — hard
+  filters. A product excluded by *either* can never be recommended, whatever it scores.
+- **`TYPE_BONUS`**, **`CONCERN_POINTS`**, **`RESULT_POINTS`** — additive scores.
+- **`TIE_BREAK_ORDER`** — resolves equal scores, so every path is deterministic.
+
+`score = TYPE_BONUS + CONCERN_POINTS + RESULT_POINTS`; the top two eligible products
+are returned. Nothing else needs to change when you edit a table.
+
+Two invariants are worth knowing:
+
+- **Age never affects the result.** It appears in no table in the engine — the file
+  does not even import the type. `recommendation.engine.spec.ts` asserts that any two
+  paths differing only in age give identical output.
+- **The Minty Fresh Clay Mask is not in the quiz at all.** The scoring tables are keyed
+  by `ScoredSlug`, which excludes it by construction, so the compiler — not a test —
+  is what keeps it out of every scoring path. It is the unconditional *routine
+  completer* offered after the result, with a menthol sensitivity notice for dry and
+  sensitive skin.
+
+All 720 paths (4 tones × 5 types × 6 concerns × 6 results) are asserted exhaustively in
+`recommendation.engine.spec.ts`: every one returns exactly two products, and no path
+ever returns a product excluded by either filter.
 
 `src/app/services/recommendation.engine.spec.ts` asserts all 30 skin-type × need
 combinations against the source table and walks every reachable path to prove the
@@ -105,9 +128,9 @@ src/styles/     _tokens · _mixins · _typography · _reset · _buttons
 
 | Route | Contains |
 |---|---|
-| `/` | Hero + quiz invitation, How It Works, footer. Presentation only, so `Home` has no ViewModel. |
+| `/` | Hero + quiz invitation, customer reviews, footer. Presentation only, so `Home` has no ViewModel. |
 | `/shop` | Page header, packages carousel, product grid, footer. Backed by `ShopViewModel`. |
-| `/quiz` | The quiz, result, and upsell. Guarded by `quizStateGuard`. |
+| `/quiz` | The five questions, the session timer, the result, and the routine completer. Guarded by `quizStateGuard`. |
 | `/cart` | Cart review and the single Shopify handoff. |
 
 The site has no navigation menu. The wholesale bar's brand mark is the link back to
@@ -142,7 +165,8 @@ Routes without one fall back to the description in `index.html`.
 | Key | Contents |
 |---|---|
 | `mooncosmo-cart-v1` | Line items: product slug + quantity only. Prices are always re-resolved from `products.data.ts`, so a price change applies to carts already in progress. |
-| `mooncosmo-quiz-v1` | Current step, all answers, and whether the upsell has been shown. |
+| `mooncosmo-quiz-v2` | Current step, all five answers, and whether the routine completer has been shown. |
+| `mooncosmo-quiz-timer-v1` | When the session timer started, its current allowance, and whether it has stopped. Elapsed time is always derived from the stored start, so a reload never restarts it. |
 
 Both are validated on read; anything malformed is discarded rather than trusted.
 

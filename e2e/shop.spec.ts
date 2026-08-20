@@ -113,7 +113,7 @@ test.describe('Home ↔ shop navigation', () => {
     // nothing to scroll and so nothing to restore.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
-    await page.getByRole('heading', { name: 'How We Help' }).scrollIntoViewIfNeeded();
+    await page.getByRole('heading', { name: 'What Our Customers Say' }).scrollIntoViewIfNeeded();
     const scrolled = await page.evaluate(() => window.scrollY);
     expect(scrolled).toBeGreaterThan(0);
 

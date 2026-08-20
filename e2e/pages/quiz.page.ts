@@ -30,11 +30,34 @@ export class QuizPage {
     await this.nextButton.click();
   }
 
+  /**
+   * Answers all five questions in order. Age and tone are always asked — there are no
+   * conditional questions — so every path goes through the same five screens.
+   */
+  async complete(answers: {
+    age?: string;
+    tone: string;
+    skinType: string;
+    concern: string;
+    result: string;
+  }): Promise<void> {
+    await this.answer(answers.age ?? '25\u201334');
+    await this.answer(answers.tone);
+    await this.answer(answers.skinType);
+    await this.answer(answers.concern);
+    await this.answer(answers.result);
+  }
+
   /** Waits for the analysis animation to hand over to the result. */
   async waitForResult(): Promise<void> {
     await expect(this.page.getByRole('heading', { name: 'Your MoonCosmo Match' })).toBeVisible({
       timeout: 15_000,
     });
+  }
+
+  /** The reassurance timer's remaining-time readout. */
+  timerLabel(): Locator {
+    return this.page.locator('.qt__time');
   }
 
   option(label: string): Locator {

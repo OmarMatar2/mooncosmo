@@ -10,15 +10,26 @@ export type ProductSlug =
 export interface Product {
   readonly slug: ProductSlug;
   readonly name: string;
-  readonly tagline: string;
   /** Shopify variant id used to build the cart permalink. */
   readonly variantId: string;
+  /** The size this variant ships as. */
   readonly size: string;
+  /** Every size the master sheet lists for this product. */
+  readonly availableSizes: readonly string[];
   readonly originalPrice: number;
   readonly salePrice: number;
+  /**
+   * The short line shown under the product across the site, taken from the flyer.
+   * Also the benefit sentence in "why we chose this for you".
+   */
   readonly description: string;
+  /** The master sheet's full Product Description. */
+  readonly fullDescription: string;
+  /** The master sheet's Approved Claims, verbatim. Never add to these. */
   readonly benefits: readonly string[];
-  readonly keyIngredients: readonly string[];
+  /** The master sheet's full ingredient list, in its stated order. */
+  readonly ingredients: readonly string[];
+  /** The master sheet's Skin Type Recommendations. */
   readonly bestFor: string;
   readonly directions: string;
   readonly warning: string;
