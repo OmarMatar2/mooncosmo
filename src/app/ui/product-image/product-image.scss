@@ -1,6 +1,11 @@
 :host {
   display: block;
   width: 100%;
+  // As a flex/grid item the automatic minimum size is the image's intrinsic size, which
+  // overrides the container's aspect-ratio box. In WebKit that floor feeds back into the
+  // `height: 100%` below on every relayout, so the card ratchets bigger on each hover.
+  min-width: 0;
+  min-height: 0;
 }
 
 img {

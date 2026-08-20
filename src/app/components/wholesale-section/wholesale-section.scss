@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+// ---- Section -----------------------------------------------------------------
+// Centred at every width; .section supplies the vertical rhythm shared with the
+// products, packages and reviews sections above it.
+.wholesale__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  text-align: center;
+}
+
+.wholesale__title {
+  margin: 0;
+}
+
+.wholesale__sub {
+  margin: 0 0 var(--space-2xs);
+  max-width: 52ch;
+  color: var(--ink-soft);
+}
+
+// ---- Dialog contents ---------------------------------------------------------
+// Moved here with the dialog itself when the trigger left the fixed header.
+.wholesale__lead {
+  margin-bottom: var(--space-md);
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+}
+
+.wholesale__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.wholesale__icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.wholesale__note {
+  margin-top: var(--space-md);
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
+  text-align: center;
+}

@@ -7,6 +7,7 @@ export interface Review {
   /** Whole stars, 1–5. */
   readonly rating: number;
   readonly author: string;
+  readonly titel: string;
   readonly body: string;
   /** ISO date, when known. Reviews without one simply omit the date line. */
   readonly date?: string;

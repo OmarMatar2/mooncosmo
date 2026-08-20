@@ -129,14 +129,24 @@ for (const [name, viewport] of Object.entries(VIEWPORTS)) {
       await expect(next).toBeInViewport();
     });
 
-    test('the wholesale bar stays visible and its button clickable', async ({ page }) => {
+    test('the fixed header stays visible and on top while scrolling', async ({ page }) => {
       await page.goto('/');
-      const trigger = page.getByRole('button', { name: 'Wholesale Inquiries' });
-      await expect(trigger).toBeInViewport();
+      const brand = page.getByRole('link', { name: 'MoonCosmo home' });
+      await expect(brand).toBeInViewport();
 
       await page.mouse.wheel(0, 1200);
+      await expect(brand).toBeInViewport();
+      expect(await isTopmostAtCentre(page, '.bar__home', 0)).toBe(true);
+    });
+
+    test('the wholesale section button is reachable and opens the dialog', async ({ page }) => {
+      await page.goto('/');
+      const trigger = page.getByRole('button', { name: 'Wholesale Inquiries' });
+      await trigger.scrollIntoViewIfNeeded();
       await expect(trigger).toBeInViewport();
-      expect(await isTopmostAtCentre(page, '.bar__cta', 0)).toBe(true);
+
+      await trigger.click();
+      await expect(page.getByRole('dialog')).toBeVisible();
     });
 
     test('package cards are reachable and open the detail modal', async ({ page }) => {

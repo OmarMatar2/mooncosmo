@@ -84,41 +84,51 @@ test.describe('Shopping without the quiz', () => {
   });
 });
 
-test.describe('Home ↔ shop navigation', () => {
-  test('the hero secondary link reaches /shop and the brand mark comes back', async ({
+test.describe('Landing page navigation', () => {
+  test('the landing page carries the whole catalogue and the brand mark comes back', async ({
     page,
   }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: 'Discover What Your Skin Needs' })).toBeVisible();
-
-    await page.getByRole('link', { name: 'Browse all products' }).click();
-    await expect(page).toHaveURL(/\/shop$/);
+    // Products and packages live here now, not behind a separate route.
     await expect(page.getByRole('heading', { name: 'All Products', exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Packages Worth Sharing' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Not Sure What To Choose?' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'What Our Customers Say' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Wholesale & Stockists' })).toBeVisible();
 
     // The brand mark is the only navigation affordance back to the landing page.
+    await page.getByRole('link', { name: 'Find Your Match' }).click();
+    await expect(page).toHaveURL(/\/quiz$/);
     await page.getByRole('link', { name: 'MoonCosmo home' }).click();
     await expect(page).toHaveURL(/\/$/);
   });
 
-  test('the shop quiz call to action sends visitors straight to the quiz', async ({ page }) => {
-    await page.goto('/shop');
-    await page.getByRole('link', { name: 'Find Your Match' }).click();
-    await expect(page).toHaveURL(/\/quiz$/);
+  test('the header holds the logo and nothing else', async ({ page }) => {
+    await page.goto('/');
+    const bar = page.locator('.bar');
+    await expect(bar.getByRole('link', { name: 'MoonCosmo home' })).toBeVisible();
+    // The wholesale trigger moved out of the bar into its own section.
+    await expect(bar.getByRole('button')).toHaveCount(0);
+    await expect(bar.getByRole('link')).toHaveCount(1);
   });
 
-  test('back from /shop restores the scroll position on /', async ({ page }) => {
-    // A phone viewport: the landing page is short, and on a desktop window there is
-    // nothing to scroll and so nothing to restore.
+  test('back from /cart restores the scroll position on /', async ({ page }) => {
+    // A phone viewport, where the landing page is long enough to have a scroll
+    // position worth restoring.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
+
+    // Leave via the floating cart button rather than a link in the page: it is
+    // position-fixed, so clicking it cannot scroll the page first and the position
+    // under test is the one actually restored.
+    await page.getByRole('button', { name: /Add .+ to cart/ }).first().click();
+
     await page.getByRole('heading', { name: 'What Our Customers Say' }).scrollIntoViewIfNeeded();
     const scrolled = await page.evaluate(() => window.scrollY);
-    expect(scrolled).toBeGreaterThan(0);
+    expect(scrolled).toBeGreaterThan(500);
 
-    await page.getByRole('link', { name: 'Browse all products' }).click();
-    await expect(page).toHaveURL(/\/shop$/);
+    await page.locator('.fab').click();
+    await expect(page).toHaveURL(/\/cart$/);
     // Forward navigation starts at the top.
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeLessThan(50);
 

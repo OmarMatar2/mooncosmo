@@ -268,7 +268,7 @@ export const PRODUCTS: readonly Product[] = [
     // completer. TODO: add the 200 ml variant id when it exists — as an additional
     // entry, never by overwriting the id below — and select it by size.
     variantId: '43501304741922',
-    size: '400 ml',
+    size: '200 ml',
     availableSizes: ['200 ml', '400 ml'],
     originalPrice: 34.99,
     salePrice: 29.99,

@@ -11,7 +11,6 @@
 
         <div class="hero__cta">
           <a class="moon-btn moon-btn--primary moon-btn--lg" routerLink="/quiz">Find Your Match</a>
-          <a class="hero__skip" routerLink="/shop">Browse all products</a>
         </div>
       </div>
 
@@ -26,6 +25,35 @@
         />
       </div>
     </div>
+  </section>
+
+  <!-- All products -->
+  <section class="section products" aria-labelledby="products-title" id="products">
+    <div class="container">
+      <div class="products__head">
+        <p class="eyebrow">The full range</p>
+        <h2 id="products-title">All Products</h2>
+      </div>
+
+      <div class="products__grid">
+        @for (product of vm.products; track product.slug) {
+          <product-card [product]="product" (added)="vm.addProduct($event.slug)" />
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section class="section section--alt packages" aria-labelledby="packages-title">
+    <div class="container packages__head">
+      <p class="eyebrow">Curated sets</p>
+      <h2 id="packages-title">Packages Worth Sharing</h2>
+      <p class="packages__sub">
+        Bundled routines at a better price. Swipe to see them all.
+      </p>
+    </div>
+
+    <package-carousel [packages]="vm.packages" (opened)="vm.showPackage($event.id)" />
   </section>
 
   <!-- Customer reviews, across the whole range rather than grouped per product.
@@ -45,5 +73,19 @@
     </section>
   }
 
+  <!-- Wholesale: owns its own dialog state, so the page has nothing to wire up. -->
+  <wholesale-section />
+
   <site-footer />
 </main>
+
+<!-- The package carousel is inert without this: `opened` only sets the ViewModel's
+     open-package state, and this is what renders it. -->
+@let openPackage = vm.openPackage();
+@if (openPackage) {
+  <package-modal
+    [contents]="openPackage"
+    (closed)="vm.closePackage()"
+    (addRequested)="vm.addPackageToCart(openPackage.package)"
+  />
+}

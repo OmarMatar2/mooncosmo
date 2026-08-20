@@ -12,16 +12,22 @@
   padding-top: env(safe-area-inset-top);
 }
 
+// The logo is the bar's only content: centred on phones, where a lone mark on the
+// left looks stranded, and back at the start once the row is wide enough.
 .bar__inner {
   @include m.container;
 
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
+  justify-content: center;
   padding-block: var(--space-2xs);
-  text-align: left;
+  text-align: center;
+
+  @include m.md {
+    justify-content: flex-start;
+    text-align: left;
+  }
 }
 
 .bar__home {
@@ -43,77 +49,4 @@
   display: block;
   width: auto;
   height: 35px;
-}
-
-.bar__text {
-  margin: 0;
-  font-size: var(--fs-xs);
-  color: var(--ink-soft);
-
-  @include m.md {
-    font-size: var(--fs-sm);
-  }
-}
-
-.bar__cta {
-  @include m.focus-ring;
-
-  // Compact bar: the 48px rule is met by the invisible tap area below.
-  position: relative;
-  padding: 0.35rem 0.9rem;
-  border: 1px solid var(--olive);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--olive);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: var(--ls-button);
-  text-transform: uppercase;
-  flex-shrink: 0;
-  white-space: nowrap;
-
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    min-width: var(--tap-target);
-    min-height: var(--tap-target);
-    width: 100%;
-    height: 100%;
-  }
-
-  @include m.pointer-fine {
-    &:hover {
-      background: var(--olive);
-      color: var(--white);
-    }
-  }
-}
-
-.wholesale__lead {
-  margin-bottom: var(--space-md);
-  color: var(--ink-soft);
-  font-size: var(--fs-sm);
-}
-
-.wholesale__actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.wholesale__icon {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 auto;
-}
-
-.wholesale__note {
-  margin-top: var(--space-md);
-  font-size: var(--fs-xs);
-  color: var(--ink-soft);
-  text-align: center;
 }

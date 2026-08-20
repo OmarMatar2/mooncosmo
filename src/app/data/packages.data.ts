@@ -18,7 +18,7 @@ export const PACKAGES: readonly ProductPackage[] = [
     products: ['hibiscus-rosa-radiance-scrub', 'turmeric-glow-scrub'],
     originalPrice: 79.98,
     salePrice: 54.99,
-    image: 'assets/packages/package-1.png',
+    image: 'assets/packages/glow-duo.png',
     imageAlt: 'The Glow Duo package with two MoonCosmo scrub jars',
   },
   {
@@ -30,7 +30,7 @@ export const PACKAGES: readonly ProductPackage[] = [
     products: ['lemon-mint-cucumber-scrub', 'minty-fresh-clay-mask'],
     originalPrice: 74.98,
     salePrice: 52.99,
-    image: 'assets/packages/package-2.png',
+    image: 'assets/packages/fresh.png',
     imageAlt: 'Fresh Start Set with a scrub jar and a clay mask jar',
   },
   {
@@ -42,7 +42,7 @@ export const PACKAGES: readonly ProductPackage[] = [
     products: ['apricot-glow-scrub', 'hibiscus-rosa-radiance-scrub'],
     originalPrice: 79.98,
     salePrice: 54.99,
-    image: 'assets/packages/package-3.png',
+    image: 'assets/packages/soft-skin.png',
     imageAlt: 'Soft Skin Ritual package with two MoonCosmo scrub jars',
   },
   {
@@ -61,7 +61,7 @@ export const PACKAGES: readonly ProductPackage[] = [
     ],
     originalPrice: 234.94,
     salePrice: 149.99,
-    image: 'assets/packages/package-4.png',
+    image: 'assets/packages/full.png',
     imageAlt: 'The Full Shelf package with all six MoonCosmo products',
   },
 ] as const;

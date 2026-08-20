@@ -11,12 +11,12 @@
       <p class="ft__shipping">{{ shippingNote }}</p>
     </div>
 
-    <div class="ft__col">
+    <!-- <div class="ft__col ft__col--contact">
       <h2 class="ft__heading">Contact</h2>
       <a class="ft__link" [href]="'mailto:' + email">{{ email }}</a>
-    </div>
+    </div> -->
 
-    <div class="ft__col">
+    <div class="ft__col ft__col--follow">
       <h2 class="ft__heading">Follow</h2>
       <ul class="ft__list">
         @for (social of socials; track social.label) {
@@ -29,7 +29,7 @@
       </ul>
     </div>
 
-    <div class="ft__col">
+    <div class="ft__col ft__col--policies">
       <h2 class="ft__heading">Policies</h2>
       <ul class="ft__list">
         @for (policy of policies; track policy.label) {

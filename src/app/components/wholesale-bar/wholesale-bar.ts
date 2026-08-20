@@ -5,17 +5,15 @@ import {
   OnDestroy,
   afterNextRender,
   inject,
-  signal,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { MoonModal } from '../../ui/moon-modal/moon-modal';
-import { PHONE_NUMBER, PHONE_URL, WHATSAPP_URL, WHOLESALE_EMAIL, WHOLESALE_EMAIL_URL } from '../../data/contact.data';
 
 /**
  * The only fixed element on the site, and the only navigation affordance: the brand
- * mark is the way back to / from every other route. There is no navigation menu.
- * Open/close is local view state; the contact details come from contact.data.ts.
+ * mark is the way back to / from every other route. There is no navigation menu, and
+ * nothing else lives in the bar — the wholesale pitch is now a full section at the
+ * foot of the landing page (see WholesaleSection).
  *
  * The bar also publishes its own rendered height to `--wholesale-bar-height` on the
  * root element. Anything anchored beneath a fixed bar has to know how tall it is, and
@@ -26,7 +24,7 @@ import { PHONE_NUMBER, PHONE_URL, WHATSAPP_URL, WHOLESALE_EMAIL, WHOLESALE_EMAIL
 @Component({
   selector: 'wholesale-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MoonModal, RouterLink],
+  imports: [RouterLink],
   templateUrl: './wholesale-bar.html',
   styleUrl: './wholesale-bar.scss',
 })
@@ -34,14 +32,6 @@ export class WholesaleBar implements OnDestroy {
   private readonly host: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly document = inject(DOCUMENT);
   private observer?: ResizeObserver;
-
-  protected readonly open = signal(false);
-
-  protected readonly whatsappUrl = WHATSAPP_URL;
-  protected readonly phoneUrl = PHONE_URL;
-  protected readonly phoneNumber = PHONE_NUMBER;
-  protected readonly emailUrl = WHOLESALE_EMAIL_URL;
-  protected readonly email = WHOLESALE_EMAIL;
 
   constructor() {
     // afterNextRender never runs on the server, so the static token value is what
@@ -68,13 +58,5 @@ export class WholesaleBar implements OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
-  }
-
-  protected show(): void {
-    this.open.set(true);
-  }
-
-  protected hide(): void {
-    this.open.set(false);
   }
 }
