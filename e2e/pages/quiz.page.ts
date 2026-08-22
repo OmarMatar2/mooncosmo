@@ -55,11 +55,6 @@ export class QuizPage {
     });
   }
 
-  /** The reassurance timer's remaining-time readout. */
-  timerLabel(): Locator {
-    return this.page.locator('.qt__time');
-  }
-
   option(label: string): Locator {
     return this.page.getByRole('radio', { name: label, exact: true });
   }

@@ -37,7 +37,6 @@ import {
 } from '../services/recommendation.engine';
 import { CartService } from '../services/cart.service';
 import { PersistenceService } from '../services/persistence.service';
-import { QuizTimerService } from '../services/quiz-timer.service';
 import { ToastService } from '../services/toast.service';
 
 /** v2: the three-question state shape from v1 can never be restored into this quiz. */
@@ -96,7 +95,6 @@ export class QuizViewModel {
   private readonly cart = inject(CartService);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
-  private readonly timer = inject(QuizTimerService);
 
   private readonly restored = this.restore();
 
@@ -110,21 +108,6 @@ export class QuizViewModel {
   readonly answers = this._answers.asReadonly();
   readonly direction = this._direction.asReadonly();
   readonly upsellShown = this._upsellShown.asReadonly();
-
-  // ---- Session timer -------------------------------------------------------
-  readonly timerRunning = this.timer.isRunning;
-  readonly timerLabel = this.timer.remainingLabel;
-  readonly timerMessage = this.timer.message;
-  readonly timerCanExtend = this.timer.canExtend;
-
-  /** Called when the visitor arrives on the quiz. Idempotent — see QuizTimerService.start. */
-  startTimer(): void {
-    this.timer.start();
-  }
-
-  extendTimer(): void {
-    this.timer.extend();
-  }
 
   // ---- Derived quiz shape --------------------------------------------------
   /** Every visitor answers all five questions — the total never adapts. */
@@ -362,8 +345,6 @@ export class QuizViewModel {
       return;
     }
     this.cart.addMany(slugs);
-    // The products have reached the cart: the reassurance timer has done its job.
-    this.timer.stop();
     this.toast.show(
       slugs.length > 1 ? 'Routine added to cart' : 'Added to cart',
       'View Cart',
@@ -405,8 +386,6 @@ export class QuizViewModel {
     this._direction.set('forward');
     this._step.set(1);
     this.persist();
-    this.timer.reset();
-    this.timer.start();
   }
 
   /** Repairs state that cannot produce a result, e.g. hand-edited localStorage. */

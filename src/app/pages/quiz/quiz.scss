@@ -34,11 +34,3 @@
   width: 100%;
   margin-inline: auto;
 }
-
-// Sits directly under the progress line, quiet enough to ignore.
-.quiz__timer {
-  max-width: 560px;
-  width: 100%;
-  margin-inline: auto;
-  margin-top: calc(var(--space-2xs) * -1);
-}

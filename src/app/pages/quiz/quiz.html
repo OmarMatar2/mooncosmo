@@ -8,15 +8,6 @@
         [fraction]="vm.progressFraction()"
         [label]="vm.progressLabel()"
       />
-      <!-- Reassurance, not pressure: sits under the progress line and never grows,
-           reddens or blocks. See QuizTimerService. -->
-      <quiz-timer
-        class="quiz__timer"
-        [label]="vm.timerLabel()"
-        [message]="vm.timerMessage()"
-        [canExtend]="vm.timerCanExtend()"
-        (extended)="vm.extendTimer()"
-      />
     }
 
     @switch (step) {
